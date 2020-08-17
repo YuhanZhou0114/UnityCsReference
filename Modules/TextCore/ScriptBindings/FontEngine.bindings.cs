@@ -276,6 +276,44 @@ namespace UnityEngine.TextCore.LowLevel
             return (FontEngineError)LoadFontFace_With_Size_FromSourceFontFile_Internal(sourceFontFile, pointSize);
         }
 
+        private static void QuickSortTemp(int[] collection, int leftIndex, int rightIndex)
+        {
+            var i = leftIndex;
+            var j = rightIndex;
+            var separateItem = collection[((leftIndex + rightIndex) / 2)];
+
+            do
+            {
+                while (collection[i] < separateItem)
+                {
+                    i++;
+                }
+
+                while (collection[j] > separateItem)
+                {
+                    j--;
+                }
+
+                if (i <= j)
+                {
+                    if (i < j)
+                    {
+                        collection.Swap(i, j);
+                    }
+
+                    i++; j--;
+                }
+
+            } while (i < j);
+
+            if (leftIndex < j)
+                QuickSortTemp(collection, leftIndex, j);
+
+            if (i < rightIndex)
+                QuickSortTemp(collection, i, rightIndex);
+        }
+
+
         [NativeMethod(Name = "TextCore::FontEngine::LoadFontFace", IsFreeFunction = true)]
         static extern int LoadFontFace_With_Size_FromSourceFontFile_Internal(byte[] sourceFontFile, int pointSize);
 
